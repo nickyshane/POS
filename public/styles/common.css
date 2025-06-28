@@ -3,3 +3,11 @@
     padding: 0;
     box-sizing: 0;
 }
+
+#app {
+    background-color: #000;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
