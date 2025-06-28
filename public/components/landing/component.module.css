@@ -1,0 +1,138 @@
+.home {
+    height: 720px;
+    position: relative;
+    overflow: hidden;
+    background: url('../../icons/home.png') center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.logo {
+    border-radius: 50%;
+    border-style: solid;
+    border-color: #ffffff;
+    border-width: 5px;
+    width: 445px;
+    height: 335px;
+    position: absolute;
+    left: 100px;
+    top: 125px;
+    object-fit: cover;
+}
+
+.unli-wings {
+    position: absolute;
+    inset: 0;
+}
+
+.unli {
+    width: 207.47px;
+    height: 102.57px;
+    position: static;
+}
+
+.u {
+    color: #ffffff;
+    text-align: left;
+    font-family: "Kalam-Regular", sans-serif;
+    font-size: 128px;
+    font-weight: 400;
+    position: absolute;
+    left: 579px;
+    top: 125px;
+    width: 78.31px;
+    height: 102.57px;
+}
+
+.nli {
+    color: #ffffff;
+    text-align: left;
+    margin-left: 5px;
+    font-family: "KaiseiOpti-Regular", sans-serif;
+    font-size: 96px;
+    font-weight: 400;
+    position: absolute;
+    left: 657.31px;
+    top: 133.48px;
+    width: 129.16px;
+    height: 94.09px;
+}
+
+.wings {
+    width: 295.95px;
+    height: 123.76px;
+    position: static;
+}
+
+.w {
+    color: #ffffff;
+    text-align: left;
+    margin-top: 13px;
+    font-family: "Kalam-Regular", sans-serif;
+    font-size: 128px;
+    font-weight: 400;
+    position: absolute;
+    left: 637.99px;
+    top: 211.46px;
+    width: 102.72px;
+    height: 123.76px;
+}
+
+.ings {
+    color: #ffffff;
+    text-align: left;
+    margin-top: 13px;
+    margin-left: 14px;
+    font-family: "KaiseiOpti-Regular", sans-serif;
+    font-size: 96px;
+    font-weight: 400;
+    position: absolute;
+    left: 740.71px;
+    top: 221.63px;
+    width: 193.23px;
+    height: 85.61px;
+}
+
+.info-button {
+    background: transparent;
+    border: none;
+    width: 64px;
+    height: 64px;
+    position: absolute;
+    left: 1178px;
+    top: 40px;
+    object-fit: cover;
+    aspect-ratio: 1;
+    display: flex;
+}
+.where-hunger-meets-unlimited-wings {
+    color: #ffffff;
+    text-align: left;
+    font-family: "Kaisei Opti, sans-serif";
+    font-weight: 400;
+    position: absolute;
+    font-size: 35px;
+    left: 558px;
+    top: 360px;
+    width: 751px;
+    height: 44px;
+}
+
+.footer {
+    background-color: #515151;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 150px;
+}
+
+.footer a {
+    text-decoration: none;
+    color: #f3e88e;
+    border: 2px solid #f3e88e;
+    padding: 10px 10px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 35px;
+}
