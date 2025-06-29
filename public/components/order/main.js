@@ -48,6 +48,9 @@ export default function Main(root) {
                         <p>SUBTOTAL</p>
                     </div>
                     <div id="cart-orders"></div>
+                    <div id="total">
+                        <p style="text-align: right; margin-right: 20px">TOTAL: <span id="total-span">0.00</span></p>
+                    </div>
                     <button>Place Order</button>
                 </div>
                 <div id="customize-order" class="${styles['customize']}">

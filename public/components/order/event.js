@@ -65,13 +65,26 @@ export default function Events() {
 const populateCustomizeContainer = (name, price) => {
     const customizeContainer = document.getElementById('customize-container');
 
+    function getMultiplier(size) {
+            switch (size) {
+                case 'S':
+                    return 1;
+                case 'M':
+                    return 1.5;
+                case 'L':
+                    return 2;
+                default:
+                    return 1; // fallback value
+            }
+    };
+
     let content = "";
 
     content = `
         <div class="${styles['customize-item']}">
             <p style="width: 100px;">${name}</p>
-            <p>${price}</p>
-            <input type="number" style="width: 50px;" id="qty"/>
+            <p id="custom-price">₱${price}.00</p>
+            <input type="number" style="width: 50px;" id="qty" value="1"/>
             <select name="size" id="size" style="width: 50px;">
                 <option value="S">S</option>
                 <option value="M">M</option>
@@ -83,29 +96,57 @@ const populateCustomizeContainer = (name, price) => {
 
     customizeContainer.innerHTML = content;
 
+    const qtyInput = document.getElementById('qty');
+    const sizeSelect = document.getElementById('size');
+    const priceDisplay = document.getElementById('custom-price');
+
+    sizeSelect.addEventListener('change', () => {
+        const selectedSize = sizeSelect.value;
+        const multiplier = getMultiplier(selectedSize);
+        const updatedPrice = price * multiplier;
+        priceDisplay.textContent = `₱${updatedPrice}.00`;
+    });
+
     const confirmOrder = document.getElementById('confirm');
 
     confirmOrder.addEventListener('click', () => {
-        const qty = document.getElementById('qty').value;
-        const size = document.getElementById('size').value;
+        const qty = qtyInput.value;
+        const size = sizeSelect.value;
+        const multiplier = getMultiplier(size);
+        const finalPrice = price * multiplier;
 
         const orderCart = document.getElementById('cart-orders');
 
-        let content = "";
-
-        content = `
+        let content = `
             <div class="${styles['customize-item']}">
                 <p style="width: 100px;">${name}</p>
-                <p>${price}</p>
+                <p>₱${finalPrice}.00</p>
                 <p>${qty}</p>
                 <p>${size}</p>
-                <p>${price * qty}.00</p>
+                <p>₱${finalPrice * qty}.00</p>
             </div>
         `;
 
         orderCart.innerHTML += content;
-        document.getElementById('customize-container').innerHTML = "";
+        customizeContainer.innerHTML = "";
         isDoneCustomizing = true;
+
+        // Save to localStorage
+        const currentCart = JSON.parse(localStorage.getItem('cart')) || [];
+        currentCart.push({
+            name,
+            size,
+            qty: parseInt(qty),
+            unitPrice: finalPrice,
+            total: finalPrice * qty
+        });
+        localStorage.setItem('cart', JSON.stringify(currentCart));
+
+        // Update total in localStorage
+        const currentTotal = currentCart.reduce((acc, item) => acc + item.total, 0);
+        localStorage.setItem('cartTotal', currentTotal.toFixed(2));
+
+        updateCartTotal()
     })
 }
 
@@ -257,4 +298,17 @@ const populateContainer = (type) => {
     }
 
     mainContent.innerHTML = content;
+}
+
+function updateCartTotal() {
+    const cartItems = document.querySelectorAll(`#cart-orders .${styles['customize-item']}`);
+    let total = 0;
+
+    cartItems.forEach(item => {
+        const totalCell = item.children[4]; // 5th child contains the total price
+        const text = totalCell.textContent.replace(/[₱,]/g, '').trim(); // Remove ₱ and commas
+        total += parseFloat(text);
+    });
+
+    document.getElementById('total-span').textContent = `₱${total.toFixed(2)}`;
 }
