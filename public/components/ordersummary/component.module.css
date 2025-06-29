@@ -1,0 +1,94 @@
+.header {
+    background-color: #515151;
+    color: white;
+    height: 90px;
+    display: flex;
+     align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+      
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    height: 70px;
+    margin-right: 10px;
+}
+
+.brand {
+    font-size: 28px;
+    line-height: 1;
+}
+
+.brand .u {
+    font-weight: bold;
+}
+
+.brand .w {
+    font-weight: bold;
+    display: block;
+}
+
+.container {
+    background-color: #cde4c4;
+    height: 80vh;
+    display: flex;
+}
+
+.left-side {
+    width: 50%;
+    border: solid 1px red;
+    color: black;
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-around;
+    border-bottom: dotted 3px black;
+    padding: 10px;
+}
+
+.orders {
+    display: flex;
+    justify-content: space-around;
+    padding: 5px;
+    margin: 10px 0px;
+    border-bottom: solid 3px white;
+}
+
+.total-summary {
+    text-align: right;
+    margin-right: 20px;
+}
+
+.right-side {
+    width: 50%;
+    border: solid 1px red;
+    padding: 20px;
+    color: black;
+}
+
+.inside-container {
+    border: solid 2px black;
+    padding: 20px;
+}
+
+.footer {
+    background-color: #515151;
+    height: 100px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 60px;
+}

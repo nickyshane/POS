@@ -2,9 +2,7 @@ import styles from './component.module.css';
 
 export default function Footer(root) {
     root.innerHTML = `
-        <a href="/menu"> Menu </a> |
-        <a href="/order"> Order </a>|
-        <a href=""> Inventory </a>
+        <button>Place Order</button>
     `;
 
     root.className = styles['footer'];
