@@ -38,11 +38,10 @@
 
 .container {
   display: flex;
-  height: calc(100vh - 80px); 
 }
 
 .sidebar {
-  width: 220px;
+  width: 20%;
   background-color: #cde4c4;
   color: black;
   border: 1px solid black;
@@ -52,8 +51,10 @@
 
 
 .main-content {
-  width: 100%;
+    width: 80%;
   background-color: #e7f0da;
+  display: flex;
+  flex-direction: column;
 }
 
 .menu {
@@ -324,4 +325,50 @@ input[type="text"], select {
 
 .table-row {
   border-bottom: 1px solid #e0e0e0;
+}
+
+.top {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+}
+
+.bottom {
+    display: flex;
+    border-top: solid 5px black;
+}
+
+.cart {
+    color: black;
+    width: 40%;
+    height: 50vh;
+    border-right: solid 5px black;
+}
+
+.customize {
+    color: black;
+    width: 60%;
+}
+
+.menu-box {
+    border: solid 2px black;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: inherit;
+    margin: 10px;
+    color: black;
+}
+
+.menu-box p {
+    text-align: center;
+}
+
+.customize-header, .customize-item {
+    display: flex;
+    justify-content: space-around;
+    border-bottom: dotted 2px black;
+    padding: 10px 0px;
 }
