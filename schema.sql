@@ -142,6 +142,43 @@ INSERT INTO `packaging_supplies_stock` (`id`, `Name`, `Stock_Level`, `Units`, `P
 (8, 'Sauce Cups', '500', 'pieces', '0.60 Php', 'PackRight Supplies', 'Condiment Packaging'),
 (9, 'Take Out Meals Boxes-Biodegradable', '180', 'pieces', '5.00 Php', 'Green Wrap Solutions', 'Packaging');
 
+
+-- CREATE TABLE products (
+--   `id` INT AUTO_INCREMENT PRIMARY KEY,
+--   `image` VARCHAR(255) NULL,
+--   `name` VARCHAR(100) NOT NULL,
+--   `category` VARCHAR(50),
+--   `price` DECIMAL(10, 2) NOT NULL,
+--   `available` BOOLEAN DEFAULT TRUE
+-- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- INSERT INTO `products` (`name`, `category`, `price`) VALUES
+-- ('Fried Chicken Wings', 'chicken', 120.00),
+-- ('Baked Buffalo Wings', 'chicken', 150.00),
+-- ('BBQ Chicken Wings', 'chicken', 150.00),
+-- ('Dry Rub Chicken Wings', 'chicken', 150.00),
+-- ('Honey-Sriracha Chicken Wings', 'chicken', 160.00),
+-- ('Lemon Pepper Chicken Wings', 'chicken', 150.00);
+
+CREATE TABLE orders (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `order_type` ENUM('dine-in', 'take-out') DEFAULT 'dine-in',
+  `total_amount` DECIMAL(10,2) DEFAULT 0.00,
+  `payment_method` ENUM('cash', 'gcash', 'card') DEFAULT 'cash',
+  `order_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE order_items (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `order_id` INT NOT NULL,
+  `product_name` VARCHAR(100) NOT NULL,
+  `quantity` INT NOT NULL,
+  `size` ENUM('S', 'M', 'L') DEFAULT 'S',
+  `price` DECIMAL(10,2), -- unit price after size multiplier
+  FOREIGN KEY (`order_id`) REFERENCES `orders`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
 --
 -- Indexes for dumped tables
 --

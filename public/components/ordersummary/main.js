@@ -21,13 +21,21 @@ export default function Main(root) {
         <div class="${styles['right-side']}">
             <div class="${styles['inside-container']}">
                 <p>Payment Method</p>
-                <label><input type="radio" name="method" value="Cash" checked>Cash</label>
-                <label><input type="radio" name="method" value="Card">Card</label>
-                <label><input type="radio" name="method" value="EWallet">E Wallet</label>
-
+                <div class="${styles['choices']}">
+                    <label><input type="radio" name="method" value="Cash" checked>Cash</label>
+                    <label><input type="radio" name="method" value="Card">Card</label>
+                    <label><input type="radio" name="method" value="EWallet">E Wallet</label>
+                </div>
+                
                 <p>Discount</p>
-                <label><input type="radio" name="discount" value="Senior">Senior</label>
-                <label><input type="radio" name="discount" value="PWD">PWD</label>
+                <div class="${styles['choices']}">
+                    <label><input type="radio" name="discount" value="Senior">Senior</label>
+                    <label><input type="radio" name="discount" value="PWD">PWD</label>
+                </div>
+
+                <label><input type="radio" name="order-type" value="dine-in">Dine In</label>
+                <label><input type="radio" name="order-type" value="take-out">Take Out</label>
+
             </div>
         </div>
     `;

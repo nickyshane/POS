@@ -60,6 +60,10 @@ export default function Events() {
             }
         });
     });
+
+    document.getElementById('place-order').addEventListener('click', function(){
+        window.app.pushRoute('/summary');
+    })
 }
 
 const populateCustomizeContainer = (name, price) => {

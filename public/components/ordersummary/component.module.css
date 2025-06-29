@@ -92,3 +92,7 @@
     align-items: center;
     gap: 60px;
 }
+
+.choices {
+    display: flex;
+}

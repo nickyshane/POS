@@ -1,4 +1,4 @@
-import Order from "../../models/order";
+import Order from "../../models/order.js";
 
 class OrderController {
     constructor() {
@@ -7,7 +7,13 @@ class OrderController {
 
     async create(request, response) {
         try{
-
+            const { cart, total, order_type, payment_method } = request.body || {};
+            const result = await this.order.create(cart, total, order_type, payment_method);
+            response.json({
+                success: true,
+                data: result
+            });
+            response.end();
         } catch(error) {
             response.json({
                 success: false,

@@ -51,7 +51,7 @@ export default function Main(root) {
                     <div id="total">
                         <p style="text-align: right; margin-right: 20px">TOTAL: <span id="total-span">0.00</span></p>
                     </div>
-                    <button>Place Order</button>
+                    <button id="place-order">Place Order</button>
                 </div>
                 <div id="customize-order" class="${styles['customize']}">
                     <h1>Customize Order</h1>
