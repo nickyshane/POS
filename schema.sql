@@ -143,22 +143,73 @@ INSERT INTO `packaging_supplies_stock` (`id`, `Name`, `Stock_Level`, `Units`, `P
 (9, 'Take Out Meals Boxes-Biodegradable', '180', 'pieces', '5.00 Php', 'Green Wrap Solutions', 'Packaging');
 
 
--- CREATE TABLE products (
---   `id` INT AUTO_INCREMENT PRIMARY KEY,
---   `image` VARCHAR(255) NULL,
---   `name` VARCHAR(100) NOT NULL,
---   `category` VARCHAR(50),
---   `price` DECIMAL(10, 2) NOT NULL,
---   `available` BOOLEAN DEFAULT TRUE
--- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE products (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `image` VARCHAR(255) NULL,
+  `name` VARCHAR(100) NOT NULL,
+  `category` VARCHAR(50),
+  `price` DECIMAL(10, 2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- INSERT INTO `products` (`name`, `category`, `price`) VALUES
--- ('Fried Chicken Wings', 'chicken', 120.00),
--- ('Baked Buffalo Wings', 'chicken', 150.00),
--- ('BBQ Chicken Wings', 'chicken', 150.00),
--- ('Dry Rub Chicken Wings', 'chicken', 150.00),
--- ('Honey-Sriracha Chicken Wings', 'chicken', 160.00),
--- ('Lemon Pepper Chicken Wings', 'chicken', 150.00);
+CREATE TABLE products_availability (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `small` INT NOT NULL,
+  `medium` INT NOT NULL,
+  `large` INT NOT NULL,
+  FOREIGN KEY (`id`) REFERENCES `products`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO `products` (`id`, `image`, `name`, `category`, `price`) VALUES
+(1, '/icons/chicken/Fried Chicken Wings 1.png', 'Fried Chicken Wings', 'chicken', 120.00),
+(2, '/icons/chicken/Baked Buffalo Wings 1.png', 'Baked Buffalo Wings', 'chicken', 150.00),
+(3, '/icons/chicken/BBQ Chicken Wings 1.png', 'BBQ Chicken Wings', 'chicken', 150.00),
+(4, '/icons/chicken/Dry Rub Chicken Wings 1.png', 'Dry Rub Chicken Wings', 'chicken', 150.00),
+(5, '/icons/chicken/Honey-Sriracha Chicken Wings 1.png', 'Honey-Sriracha Chicken Wings', 'chicken', 160.00),
+(6, '/icons/chicken/Lemon Pepper Wings 1.png', 'Lemon Pepper Chicken Wings', 'chicken', 150.00),
+(7, '/icons/fries/Cheese Fries 1.png', 'Cheese Fries', 'fries', 110.00),
+(8, '/icons/fries/Belgian Fries 1.png', 'Belgian Fries', 'fries', 90.00),
+(9, '/icons/fries/Garlic Fries 1.png', 'Garlic Fries', 'fries', 100.00),
+(10, '/icons/fries/Standard Cut 1.png', 'Standard Cut', 'fries', 70.00),
+(11, '/icons/fries/Sweet Potato Fries 1.png', 'Sweet Potato Fries', 'fries', 75.00),
+(12, '/icons/fries/Truffle Fries 1.png', 'Truffle Fries', 'fries', 160.00),
+(13, '/icons/pizza/Ham & Cheese 1.png', 'Ham & Cheese', 'pizza', 70.00),
+(14, '/icons/pizza/Hawaiian Pizza 1.png', 'Hawaiian', 'pizza', 80.00),
+(15, '/icons/pizza/Vegetarian Pizza 1.png', 'Vegetarian', 'pizza', 80.00),
+(16, '/icons/pizza/Pepperoni Pizza 1.png', 'Peperoni', 'pizza', 85.00),
+(17, '/icons/pizza/Tomato And Olive 1.png', 'Tomato & Olive', 'pizza', 90.00),
+(18, '/icons/pizza/Pacific Veggie 1.png', 'Pacific Veggie', 'pizza', 100.00),
+(19, '/icons/drinks/Water Bottle 1.png', 'Bottled Water', 'drinks', 20.00),
+(20, '/icons/drinks/Coke 1.png', 'Coke (1.5L)', 'drinks', 120.00),
+(21, '/icons/drinks/Ice Tea 1.png', 'Ice Tea (1.5L)', 'drinks', 110.00),
+(22, '/icons/drinks/Orange Juice 1.png', 'Orange Juice (1L)', 'drinks', 75.00),
+(23, '/icons/drinks/Sprite 1.png', 'Sprite (1.5L)', 'drinks', 120.00),
+(24, '/icons/drinks/Sprite Zero 1.png', 'Sprite Zero', 'drinks', 35.00);
+
+INSERT INTO `products_availability` (`id`, `small`, `medium`, `large`) VALUES
+(1, 10, 10, 10),
+(2, 10, 10, 10),
+(3, 10, 10, 10),
+(4, 10, 10, 10),
+(5, 10, 10, 10),
+(6, 10, 10, 10),
+(7, 10, 10, 10),
+(8, 10, 10, 10),
+(9, 10, 10, 10),
+(10, 10, 10, 10),
+(11, 10, 10, 10),
+(12, 10, 10, 10),
+(13, 10, 10, 10),
+(14, 10, 10, 10),
+(15, 10, 10, 10),
+(16, 10, 10, 10),
+(17, 10, 10, 10),
+(18, 10, 10, 10),
+(19, 10, 10, 10),
+(20, 10, 10, 10),
+(21, 10, 10, 10),
+(22, 10, 10, 10),
+(23, 10, 10, 10),
+(24, 10, 10, 10);
 
 CREATE TABLE orders (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
@@ -171,11 +222,13 @@ CREATE TABLE orders (
 CREATE TABLE order_items (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `order_id` INT NOT NULL,
-  `product_name` VARCHAR(100) NOT NULL,
+  `product_id` INT NOT NULL,
   `quantity` INT NOT NULL,
   `size` ENUM('S', 'M', 'L') DEFAULT 'S',
   `price` DECIMAL(10,2), -- unit price after size multiplier
-  FOREIGN KEY (`order_id`) REFERENCES `orders`(`id`) ON DELETE CASCADE
+  FOREIGN KEY (`order_id`) REFERENCES `orders`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`product_id`) REFERENCES `products`(`id`)
+
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 

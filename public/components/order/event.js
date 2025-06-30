@@ -1,20 +1,35 @@
 import styles from './component.module.css';
-import BBW from '../../icons/chicken/Baked Buffalo Wings 1.png';
-import BCW from '../../icons/chicken/BBQ Chicken Wings 1.png';
-import DRCW from '../../icons/chicken/Dry Rub Chicken Wings 1.png';
-import FCW from '../../icons/chicken/Fried Chicken Wings 1.png';
-import HSCW from '../../icons/chicken/Honey-Sriracha Chicken Wings 1.png';
-import LPW from '../../icons/chicken/Lemon Pepper Wings 1.png';
+import axios from 'axios';
 
 let isDoneCustomizing = true;
 
-export default function Events() {
+export default async function Events() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const total = localStorage.getItem('cartTotal') || '0.00';
+    const cartOrders = document.getElementById('cart-orders');
+
+    let cartContent = "";
+    cart.forEach(item => {
+        cartContent += `
+            <div class="${styles['customize-item']}">
+                <p style="width: 100px;">${item.name}</p>
+                <p>₱${item.unitPrice}.00</p>
+                <p>${item.qty}</p>
+                <p>${item.size}</p>
+                <p>₱${item.unitPrice * item.qty}.00</p>
+            </div>
+        `;
+    })
+    cartOrders.innerHTML = cartContent;
+    document.getElementById('total-span').textContent = `₱${total}`;
+
+
     const mainContent = document.getElementById('main-content');
 
     const buttons = document.querySelectorAll(`.${styles['menu-item']}`);
 
     buttons.forEach((button) => {
-        button.addEventListener('click', () => {
+        button.addEventListener('click', async function() {
             buttons.forEach(btn => btn.classList.remove(styles['active']));
 
             button.classList.add(styles['active']);
@@ -23,7 +38,7 @@ export default function Events() {
 
             mainContent.innerHTML = "";
 
-            populateContainer(type);
+            await populateContainer(type);
 
             const menuItems = document.querySelectorAll(`.${styles['menu-box']}`);
 
@@ -43,9 +58,10 @@ export default function Events() {
         });
     });
 
-    populateContainer('chicken');
+    await populateContainer('chicken');
 
     const menuItems = document.querySelectorAll(`.${styles['menu-box']}`);
+    console.log(menuItems)
 
     menuItems.forEach((item) => {
         item.addEventListener('click', () => {
@@ -155,151 +171,171 @@ const populateCustomizeContainer = (name, price) => {
 }
 
 // Content loader function
-const populateContainer = (type) => {
+async function populateContainer(type) {
+    const productData = await axios.get(
+        `http://localhost:4000/v1/product/${type}`, {
+            headers: {
+                "Content-Type": "application/json",
+                "apikey": "pos"
+            }
+        }
+    )
+    const dataArray = productData.data.data;
+
     const mainContent = document.getElementById('main-content');
 
     let content = "";
 
-    switch(type) {
-        case 'chicken':
-            content = `
-                <div class="${styles['menu-box']}" data-name="Fried Chicken Wings" data-price="120">
-                    <img src="${FCW}" />
-                    <p>Fried Chicken Wings</p>
-                    <p>₱120</p>
-                </div>
-                <div class="${styles['menu-box']}" data-name="Baked Bufallo Wings" data-price="150">
-                    <img src="${BBW}" />
-                    <p>Baked Bufallo Wings</p>
-                    <p>₱150</p>
-                </div>
-                <div class="${styles['menu-box']}" data-name="BBQ Chicken Wings" data-price="150">
-                    <img src="${BCW}" />
-                    <p>BBQ Chicken Wings</p>
-                    <p>₱150</p>
-                </div>
-                <div class="${styles['menu-box']}" data-name="Dry Rub Chicken Wings" data-price="150">
-                    <img src="${DRCW}" />
-                    <p>Dry Rub Chicken Wings</p>
-                    <p>₱150</p>
-                </div>
-                <div class="${styles['menu-box']}" data-name="Honey-Sriracha Chicken Wings" data-price="160">
-                    <img src="${HSCW}" />
-                    <p>Honey-Sriracha Chicken Wings</p>
-                    <p>₱160</p>
-                </div>
-                <div class="${styles['menu-box']}" data-name="Lemon Pepper Chicken Wings" data-price="150">
-                    <img src="${LPW}" />
-                    <p>Lemon Pepper Chicken Wings</p>
-                    <p>₱150</p>
+    for (const item of dataArray) {
+            content += `
+                <div class="${styles['menu-box']}" data-name="${item.name}" data-price="${item.price}">
+                    <img src="${item.image || ''}" />
+                    <p>${item.name}</p>
+                    <p>₱${item.price}</p>
                 </div>
             `;
-            break;
-        case 'fries':
-            content = `
-                <div class="${styles['menu-box']}" data-name="Cheese Fries" data-price="110">
-                    <img src="" />
-                    <p>Cheese Fries</p>
-                    <p>₱110</p>
-                </div>
-                <div class="${styles['menu-box']}" data-name="Baked Belgian Fries" data-price="90">
-                    <img src="" />
-                    <p>Baked Belgian Fries</p>
-                    <p>₱90</p>
-                </div>
-                <div class="${styles['menu-box']}" data-name="Garlic Fries" data-price="100">
-                    <img src="" />
-                    <p>Garlic Fries</p>
-                    <p>₱100</p>
-                </div>
-                <div class="${styles['menu-box']}" data-name="Standard Cut" data-price="70">
-                    <img src="" />
-                    <p>Standard Cut</p>
-                    <p>₱70</p>
-                </div>
-                <div class="${styles['menu-box']}" data-name="Sweet Potato Fries" data-price="75">
-                    <img src="" />
-                    <p>Sweet Potato Fries</p>
-                    <p>₱75</p>
-                </div>
-                <div class="${styles['menu-box']}" data-name="Truffle Fries" data-price="160">
-                    <img src="" />
-                    <p>Truffle Fries</p>
-                    <p>₱160</p>
-                </div>
-            `;
-            break;
-        case 'pizza':
-            content = `
-                <div class="${styles['menu-box']}" data-name="Ham & Cheese" data-price="70">
-                    <img src="" />
-                    <p>Ham & Cheese</p>
-                    <p>₱70</p>
-                </div>
-                <div class="${styles['menu-box']}" data-name="Hawaiian" data-price="80">
-                    <img src="" />
-                    <p>Hawaiian</p>
-                    <p>₱80</p>
-                </div>
-                <div class="${styles['menu-box']}" data-name="Vegetarian" data-price="80">
-                    <img src="" />
-                    <p>Vegetarian</p>
-                    <p>₱80</p>
-                </div>
-                <div class="${styles['menu-box']}" data-name="Peperoni" data-price="85">
-                    <img src="" />
-                    <p>Peperoni</p>
-                    <p>₱85</p>
-                </div>
-                <div class="${styles['menu-box']}" data-name="Tomato & Olive" data-price="90">
-                    <img src="" />
-                    <p>Tomato & Olive</p>
-                    <p>₱90</p>
-                </div>
-                <div class="${styles['menu-box']}" data-name="Pacific Veggie" data-price="100">
-                    <img src="" />
-                    <p>Pacific Veggie</p>
-                    <p>₱100</p>
-                </div>
-            `;
-            break;
-        case 'drinks':
-            content = `
-                <div class="${styles['menu-box']}" data-name="Bottled Water" data-price="20">
-                    <img src="" />
-                    <p>Bottled Water</p>
-                    <p>₱20</p>
-                </div>
-                <div class="${styles['menu-box']}" data-name="Coke (1.5L)" data-price="120">
-                    <img src="" />
-                    <p>Coke (1.5L)</p>
-                    <p>₱120</p>
-                </div>
-                <div class="${styles['menu-box']}" data-name="Ice Tea (1L)" data-price="110">
-                    <img src="" />
-                    <p>Ice Tea (1L)</p>
-                    <p>₱110</p>
-                </div>
-                <div class="${styles['menu-box']}" data-name="Orange Juice (1L)" data-price="75">
-                    <img src="" />
-                    <p>Orange Juice (1L)</p>
-                    <p>₱75</p>
-                </div>
-                <div class="${styles['menu-box']}" data-name="Sprite (1.5L)" data-price="120">
-                    <img src="" />
-                    <p>Sprite (1.5L)</p>
-                    <p>₱120</p>
-                </div>
-                <div class="${styles['menu-box']}" data-name="Sprite Zero" data-price="35">
-                    <img src="" />
-                    <p>Srite Zero</p>
-                    <p>₱35</p>
-                </div>
-            `;
-            break;
-        default:
-            content = `<p>Category not found.</p>`;
-    }
+        }
+
+    // switch(type) {
+    //     case 'chicken':
+    //         content = `
+    //             <div class="${styles['menu-box']}" data-name="Fried Chicken Wings" data-price="120">
+    //                 <img src="${FCW}" />
+    //                 <p>Fried Chicken Wings</p>
+    //                 <p>₱120</p>
+    //             </div>
+    //             <div class="${styles['menu-box']}" data-name="Baked Bufallo Wings" data-price="150">
+    //                 <img src="${BBW}" />
+    //                 <p>Baked Bufallo Wings</p>
+    //                 <p>₱150</p>
+    //             </div>
+    //             <div class="${styles['menu-box']}" data-name="BBQ Chicken Wings" data-price="150">
+    //                 <img src="${BCW}" />
+    //                 <p>BBQ Chicken Wings</p>
+    //                 <p>₱150</p>
+    //             </div>
+    //             <div class="${styles['menu-box']}" data-name="Dry Rub Chicken Wings" data-price="150">
+    //                 <img src="${DRCW}" />
+    //                 <p>Dry Rub Chicken Wings</p>
+    //                 <p>₱150</p>
+    //             </div>
+    //             <div class="${styles['menu-box']}" data-name="Honey-Sriracha Chicken Wings" data-price="160">
+    //                 <img src="${HSCW}" />
+    //                 <p>Honey-Sriracha Chicken Wings</p>
+    //                 <p>₱160</p>
+    //             </div>
+    //             <div class="${styles['menu-box']}" data-name="Lemon Pepper Chicken Wings" data-price="150">
+    //                 <img src="${LPW}" />
+    //                 <p>Lemon Pepper Chicken Wings</p>
+    //                 <p>₱150</p>
+    //             </div>
+    //         `;
+    //         break;
+    //     case 'fries':
+    //         content = `
+    //             <div class="${styles['menu-box']}" data-name="Cheese Fries" data-price="110">
+    //                 <img src="" />
+    //                 <p>Cheese Fries</p>
+    //                 <p>₱110</p>
+    //             </div>
+    //             <div class="${styles['menu-box']}" data-name="Baked Belgian Fries" data-price="90">
+    //                 <img src="" />
+    //                 <p>Baked Belgian Fries</p>
+    //                 <p>₱90</p>
+    //             </div>
+    //             <div class="${styles['menu-box']}" data-name="Garlic Fries" data-price="100">
+    //                 <img src="" />
+    //                 <p>Garlic Fries</p>
+    //                 <p>₱100</p>
+    //             </div>
+    //             <div class="${styles['menu-box']}" data-name="Standard Cut" data-price="70">
+    //                 <img src="" />
+    //                 <p>Standard Cut</p>
+    //                 <p>₱70</p>
+    //             </div>
+    //             <div class="${styles['menu-box']}" data-name="Sweet Potato Fries" data-price="75">
+    //                 <img src="" />
+    //                 <p>Sweet Potato Fries</p>
+    //                 <p>₱75</p>
+    //             </div>
+    //             <div class="${styles['menu-box']}" data-name="Truffle Fries" data-price="160">
+    //                 <img src="" />
+    //                 <p>Truffle Fries</p>
+    //                 <p>₱160</p>
+    //             </div>
+    //         `;
+    //         break;
+    //     case 'pizza':
+    //         content = `
+    //             <div class="${styles['menu-box']}" data-name="Ham & Cheese" data-price="70">
+    //                 <img src="" />
+    //                 <p>Ham & Cheese</p>
+    //                 <p>₱70</p>
+    //             </div>
+    //             <div class="${styles['menu-box']}" data-name="Hawaiian" data-price="80">
+    //                 <img src="" />
+    //                 <p>Hawaiian</p>
+    //                 <p>₱80</p>
+    //             </div>
+    //             <div class="${styles['menu-box']}" data-name="Vegetarian" data-price="80">
+    //                 <img src="" />
+    //                 <p>Vegetarian</p>
+    //                 <p>₱80</p>
+    //             </div>
+    //             <div class="${styles['menu-box']}" data-name="Peperoni" data-price="85">
+    //                 <img src="" />
+    //                 <p>Peperoni</p>
+    //                 <p>₱85</p>
+    //             </div>
+    //             <div class="${styles['menu-box']}" data-name="Tomato & Olive" data-price="90">
+    //                 <img src="" />
+    //                 <p>Tomato & Olive</p>
+    //                 <p>₱90</p>
+    //             </div>
+    //             <div class="${styles['menu-box']}" data-name="Pacific Veggie" data-price="100">
+    //                 <img src="" />
+    //                 <p>Pacific Veggie</p>
+    //                 <p>₱100</p>
+    //             </div>
+    //         `;
+    //         break;
+    //     case 'drinks':
+    //         content = `
+    //             <div class="${styles['menu-box']}" data-name="Bottled Water" data-price="20">
+    //                 <img src="" />
+    //                 <p>Bottled Water</p>
+    //                 <p>₱20</p>
+    //             </div>
+    //             <div class="${styles['menu-box']}" data-name="Coke (1.5L)" data-price="120">
+    //                 <img src="" />
+    //                 <p>Coke (1.5L)</p>
+    //                 <p>₱120</p>
+    //             </div>
+    //             <div class="${styles['menu-box']}" data-name="Ice Tea (1L)" data-price="110">
+    //                 <img src="" />
+    //                 <p>Ice Tea (1L)</p>
+    //                 <p>₱110</p>
+    //             </div>
+    //             <div class="${styles['menu-box']}" data-name="Orange Juice (1L)" data-price="75">
+    //                 <img src="" />
+    //                 <p>Orange Juice (1L)</p>
+    //                 <p>₱75</p>
+    //             </div>
+    //             <div class="${styles['menu-box']}" data-name="Sprite (1.5L)" data-price="120">
+    //                 <img src="" />
+    //                 <p>Sprite (1.5L)</p>
+    //                 <p>₱120</p>
+    //             </div>
+    //             <div class="${styles['menu-box']}" data-name="Sprite Zero" data-price="35">
+    //                 <img src="" />
+    //                 <p>Srite Zero</p>
+    //                 <p>₱35</p>
+    //             </div>
+    //         `;
+    //         break;
+    //     default:
+    //         content = `<p>Category not found.</p>`;
+    // }
 
     mainContent.innerHTML = content;
 }
