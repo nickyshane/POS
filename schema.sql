@@ -216,7 +216,8 @@ CREATE TABLE orders (
   `order_type` ENUM('dine-in', 'take-out') DEFAULT 'dine-in',
   `total_amount` DECIMAL(10,2) DEFAULT 0.00,
   `payment_method` ENUM('cash', 'gcash', 'card') DEFAULT 'cash',
-  `order_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  `order_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `status` ENUM('pending', 'progressing', 'completed') DEFAULT 'pending'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE order_items (

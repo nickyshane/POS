@@ -25,7 +25,13 @@ class OrderController {
 
     async read(request, response) {
         try{
-
+            const { status } = request.params || {};
+            const result = await this.order.read(status);
+            response.json({
+                success: true,
+                data: result
+            });
+            response.end();
         } catch(error) {
             response.json({
                 success: false,
@@ -37,7 +43,12 @@ class OrderController {
 
     async update(request, response) {
         try{
-
+            const { order_id, status } = request.body || {};
+            const result = await this.order.update(order_id, status);
+            response.json({
+                success: true,
+            });
+            response.end();
         } catch(error) {
             response.json({
                 success: false,

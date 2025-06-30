@@ -8,13 +8,13 @@ const order = new OrderController();
 orderRouter.use(authorization);
 
 // Get Methods
-orderRouter.get('/', order.read.bind(order));
+orderRouter.get('/:status', order.read.bind(order));
 
 // Post Methods
 orderRouter.post('/', order.create.bind(order));
 
 // Patch Methods
-orderRouter.patch('/', order.update.bind(order));
+orderRouter.patch('/status', order.update.bind(order));
 
 // Delete Methods
 orderRouter.delete('/', order.delete.bind(order));

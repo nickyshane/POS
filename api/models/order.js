@@ -43,12 +43,52 @@ class Order {
         }
     };
 
-    async read() {
+    async read(status) {
+        try {
+            const orders = [];
 
+            const [results,] = await this.db.execute(
+                `SELECT * FROM orders WHERE status = ?`,
+                [status]
+            );
+            
+            for (const item of results) {
+                const [itemsResult,] = await this.db.execute(
+                `SELECT 
+                    oi.order_id, 
+                    oi.product_id, 
+                    p.name AS product_name,
+                    oi.quantity, 
+                    oi.size, 
+                    oi.price 
+                 FROM order_items oi
+                 JOIN products p ON oi.product_id = p.id
+                 WHERE oi.order_id = ?`,
+                [item.id]
+            );
+                orders.push({
+                    ...item,
+                    items: itemsResult
+                })
+            }
+            return orders;
+        } catch(error) {
+            console.error("<error> order.read ", error);
+            throw error;
+        }
     };
 
-    async update() {
-
+    async update(orderId, status) {
+        try {
+            const [result,] = await this.db.execute(
+                `UPDATE orders SET status = ? WHERE id = ?`,
+                [status, orderId]
+            );
+            return result;
+        } catch(error) {
+            console.error("<error> order.update ", error);
+            throw error;
+        }
     };
 
     async delete() {

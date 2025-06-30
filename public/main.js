@@ -7,6 +7,7 @@ import OrderSummary from "./pages/ordersummary.js";
 import Management from "./pages/management.js";
 import ProductInventory from "./pages/productInventory.js";
 import SuppliesInventory from "./pages/suppliesInventory.js";
+import Orders from "./pages/orders.js";
 
 // Uncomment this to implement styling
 import "./styles/common.css";
@@ -26,5 +27,6 @@ app.add("/summary", OrderSummary);
 app.add("/management", Management);
 app.add("/products", ProductInventory);
 app.add("/supplies", SuppliesInventory);
+app.add("/orders", Orders);
 
 app.handleRouteChanges();

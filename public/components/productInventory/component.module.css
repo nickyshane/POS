@@ -38,6 +38,7 @@
 
 .container {
   display: flex;
+  min-height: 80vh;
 }
 
 .sidebar {
