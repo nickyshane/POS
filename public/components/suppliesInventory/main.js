@@ -49,7 +49,7 @@ export default function Main(root) {
                         <th>CATEGORY</th>
                     </thead>
                     <tbody></tbody>
-                <table>
+                </table>
             </div>
         </main>
     `;

@@ -7,8 +7,8 @@ class ProductController {
 
     async create(request, response) {
         try {
-            const { image_url, name, category, price } = request.body || {};
-            const result = await this.product.create(image_url, name, category, price);
+            const { image_url, name, category, price, small, medium, large } = request.body || {};
+            const result = await this.product.create(image_url, name, category, price, small, medium, large);
             response.json({
                 success: true,
                 data: result

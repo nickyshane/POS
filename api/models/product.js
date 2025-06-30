@@ -5,13 +5,22 @@ class Product {
         this.db = connection;
     }
 
-    async create(imagUrl, name, category, price) {
+    async create(imageUrl, name, category, price, small, medium, large) {
         try {
+            const finalImageUrl = imageUrl !== undefined ? imageUrl : null;
+
+            console.log("DEBUG:> ", imageUrl, name, category, price, small, medium, large)
             const [result,] = await this.db.execute(
                 `INSERT INTO products (image, name, category, price) VALUES (?, ?, ?, ?)`,
-                [imagUrl, name, category, price]
+                [finalImageUrl, name, category, price]
             );
-            return result;
+
+            const [result2,] = await this.db.execute(
+                `INSERT INTO products_availability (id, small, medium, large) VALUES (?, ?, ?, ?)`,
+                [result.insertId, small, medium, large]
+            );
+            console.log(result.insertId)
+            return result2;
         } catch(error) {
             console.error("<error> product.create ", error);
             throw error;

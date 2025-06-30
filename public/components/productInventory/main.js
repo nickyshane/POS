@@ -38,7 +38,9 @@ export default function Main(root) {
         <main class="${styles['main-content']}">
             <div class="${styles['top']}"></div>
             <div class="bottom">
-                <div class="search"></div>
+                <div class="search">
+                    <button id="add-product">Add Product</button>
+                </div>
                 <table class="${styles['table']} "id="products-inventory" border="1">
                     <thead>
                         <th>NAME</th>
@@ -48,9 +50,52 @@ export default function Main(root) {
                         <th>LARGE</th>
                     </thead>
                     <tbody></tbody>
-                <table>
+                </table>
             </div>
         </main>
+
+        <div class="${styles.modal}">
+            <div class="${styles['modal-overlay']}">
+                <div class="${styles['modal-content']}">
+                    <h2>Add Product</h2>
+                    <form id="add-product-form" class="${styles['form']}">
+                        <label>
+                            Image URL:
+                            <input type="text" name="image" />
+                        </label>
+                        <label>
+                            Name:
+                            <input type="text" name="name" required />
+                        </label>
+                        <label>
+                            Price:
+                            <input type="number" name="price" step="0.01" min="0" required />
+                        </label>
+                        <label>
+                            Category:
+                            <input type="text" name="category" required />
+                        </label>
+                        <label>
+                            Small:
+                            <input type="number" name="small" min="0" required />
+                        </label>
+                        <label>
+                            Medium:
+                            <input type="number" name="medium" min="0" required />
+                        </label>
+                        <label>
+                            Large:
+                            <input type="number" name="large" min="0" required />
+                        </label>
+
+                        <div class="${styles['modal-actions']}">
+                            <button type="submit">Save</button>
+                            <button type="button" id="cancel-add">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     `;
 
     root.className = styles['container']

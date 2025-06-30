@@ -4,7 +4,55 @@ import axios from 'axios';
 export default async function Events() {
     const mainContent = document.querySelector('#products-inventory tbody');
     const buttons = document.querySelectorAll(`.${styles['menu-item']}`);
+
+    const addProductBtn = document.getElementById('add-product');
+    const modal = document.querySelector(`.${styles.modal}`);
+    const cancelBtn = document.querySelector('#cancel-add');
+    const form = document.querySelector('#add-product-form');
     
+    addProductBtn.addEventListener('click', function () {
+        modal.style.display = 'block';
+    });
+
+    cancelBtn.addEventListener('click', function () {
+        modal.style.display = 'none';
+        form.reset(); // Optional: Reset the form
+    });
+
+    form.addEventListener('submit', async function (event) {
+        event.preventDefault(); // Prevent page reload
+
+        // Get values from form
+        const formData = new FormData(form);
+        const data = {
+            image: formData.get('image'),
+            name: formData.get('name'),
+            price: parseFloat(formData.get('price')),
+            category: formData.get('category'),
+            small: parseInt(formData.get('small')) || 0,
+            medium: parseInt(formData.get('medium')) || 0,
+            large: parseInt(formData.get('large')) || 0
+        };
+
+        try {
+            // TODO: Replace with your actual API endpoint
+            await axios.post('http://localhost:4000/v1/product', data, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "apikey": "pos"
+                }
+            });
+
+            alert('Product added!');
+            modal.style.display = 'none';
+            form.reset();
+            window.app.pushRoute("/products")
+            // Optional: Refresh inventory table here
+        } catch (error) {
+            console.error('Error saving product:', error);
+            alert('Failed to add product');
+        }
+    });
         buttons.forEach((button) => {
             button.addEventListener('click', async function() {
                 buttons.forEach(btn => btn.classList.remove(styles['active']));
@@ -16,26 +64,17 @@ export default async function Events() {
                 mainContent.innerHTML = "";
     
                 await populateTable(type);
-    
-                const menuItems = document.querySelectorAll(`.${styles['menu-box']}`);
-    
-                menuItems.forEach((item) => {
-                    item.addEventListener('click', () => {
-                        if (isDoneCustomizing) {
-                            const name = item.getAttribute('data-name');
-                            const price = item.getAttribute('data-price');
-    
-                            populateCustomizeContainer(name, price)
-                            isDoneCustomizing = false
-                        } else {
-                            window.alert("Please settle current order")
-                        }
-                    });
-                });
             });
         });
     
-    await populateTable('chicken')
+    await populateTable('chicken');
+    
+    const button = document.getElementById("add-product");
+
+    button.addEventListener('click', function() {
+
+    })
+
 
 }
 
