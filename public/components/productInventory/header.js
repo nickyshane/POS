@@ -4,7 +4,7 @@ import Logo from '../../icons/logo.png';
 export default function Header(root) {
     root.innerHTML = `
         <div class="${styles['logo']}">
-        <a href="../home/home.html">
+        <a href="/">
             <img src="${Logo}" alt="UnliWings Logo" />
         </a>
         <div class="${styles['brand']}">
