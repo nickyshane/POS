@@ -45,8 +45,8 @@ class InventoryController {
     async update(request, response) {
         try {
             const { type } = request.params || {};
-            const { stock_level, name } = request.body || {};
-            const result = await this.inventory.update(type, stock_level, name);
+            const { product_id, stock_level, units, price, supplier, category } = request.body || {};
+            const result = await this.inventory.update(type, product_id, stock_level, units, price, supplier, category);
             response.json({
                 success: true,
                 data: result

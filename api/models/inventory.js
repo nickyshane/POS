@@ -32,12 +32,12 @@ class Inventory {
         }
     }
 
-    async update(type, stockLevel, name) {
+    async update(type, productId, stockLevel, units, price, supplier, category) {
         try {
-            const query = `UPDATE ${type} SET stock_level = stock_level + ? WHERE Name = ?`;
+            const query = `UPDATE ${type} SET Stock_Level = ?, Units = ?, Price = ?, Supplier = ?, Category = ? WHERE id = ?`;
             const [result,] = await this.db.execute(
                 query,
-                [stockLevel, name]
+                [stockLevel, units, price, supplier, category, productId]
             );
             return result;
         } catch(error) {
